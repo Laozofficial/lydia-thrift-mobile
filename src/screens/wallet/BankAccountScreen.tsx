@@ -124,6 +124,7 @@ export function BankAccountScreen({ navigation }: Props) {
 
       <Button
         title={existing ? 'Update account' : 'Save account'}
+        tone="onBackground"
         loading={isSubmitting}
         onPress={handleSubmit}
       />
@@ -134,11 +135,11 @@ export function BankAccountScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   lead: {
     fontSize: 15,
-    color: colors.textSecondary,
+    color: colors.onBackgroundMuted,
     lineHeight: 22,
     marginBottom: 20,
     marginTop: 8,
   },
-  error: { color: colors.error, marginBottom: 12 },
-  success: { color: colors.success, marginBottom: 12, fontWeight: '600' },
+  error: { color: '#FECACA', marginBottom: 12 },
+  success: { color: '#6EE7B7', marginBottom: 12, fontWeight: '600' },
 });

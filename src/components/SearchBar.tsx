@@ -1,6 +1,8 @@
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import { colors } from '../theme/colors';
+import { fonts } from '../theme/typography';
+import { spacing } from '../theme/spacing';
 
 type Props = {
   value: string;
@@ -27,15 +29,16 @@ export function SearchBar({ value, onChangeText, placeholder = 'Search productsâ
 
 const styles = StyleSheet.create({
   wrap: {
-    marginBottom: 14,
+    marginBottom: spacing.lg,
   },
   input: {
-    backgroundColor: colors.glass.surfaceStrong,
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: colors.glass.border,
+    borderColor: colors.borderOnSurface,
     borderRadius: colors.radius.lg,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
+    paddingHorizontal: 18,
+    paddingVertical: 16,
+    fontFamily: fonts.medium,
     fontSize: colors.font.base,
     color: colors.text,
   },

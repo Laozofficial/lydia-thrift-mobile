@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Feather } from '@expo/vector-icons';
 
@@ -13,6 +13,7 @@ import {
 import { getPaystackConfig } from '../../api/paystack';
 import { BackButton } from '../../components/BackButton';
 import { Button } from '../../components/Button';
+import { ChoiceChip } from '../../components/ChoiceChip';
 import { Card } from '../../components/Card';
 import { TextField } from '../../components/TextField';
 import { Screen } from '../../components/Screen';
@@ -109,14 +110,19 @@ export function FundWalletScreen({ navigation }: Props) {
       <Screen scroll padded>
         <View style={styles.waitingWrap}>
           <View style={styles.waitingIcon}>
-            <ActivityIndicator size="large" color={colors.accent} />
+            <ActivityIndicator size="large" color={colors.primary} />
           </View>
           <Text style={styles.waitingTitle}>Confirming payment</Text>
           <Text style={styles.waitingLead}>
             Paystack is notifying our server. Your wallet updates automatically via webhook — usually within a few seconds.
           </Text>
-          <Button title="Check again" onPress={handleRetryPoll} />
-          <Button title="Back to wallet" variant="ghost" onPress={() => navigation.goBack()} />
+          <Button title="Check again" tone="onBackground" onPress={handleRetryPoll} />
+          <Button
+            title="Back to wallet"
+            variant="outline"
+            tone="onBackground"
+            onPress={() => navigation.goBack()}
+          />
         </View>
       </Screen>
     );
@@ -146,21 +152,18 @@ export function FundWalletScreen({ navigation }: Props) {
         <Text style={styles.quickLabel}>Quick select</Text>
         <View style={styles.quickRow}>
           {QUICK_AMOUNTS.map((q) => (
-            <Pressable
+            <ChoiceChip
               key={q}
-              style={[styles.quickChip, amount === String(q) && styles.quickChipActive]}
+              label={formatNaira(q)}
+              selected={amount === String(q)}
               onPress={() => setAmount(String(q))}
-            >
-              <Text style={[styles.quickChipText, amount === String(q) && styles.quickChipTextActive]}>
-                {formatNaira(q)}
-              </Text>
-            </Pressable>
+            />
           ))}
         </View>
       </Card>
 
       <View style={styles.trustRow}>
-        <Feather name="shield" size={16} color={colors.accent} />
+        <Feather name="shield" size={16} color={colors.cream} />
         <Text style={styles.trustText}>Secured by Paystack · Bank transfer & cards</Text>
       </View>
 
@@ -177,41 +180,32 @@ export function FundWalletScreen({ navigation }: Props) {
 }
 
 const styles = StyleSheet.create({
-  title: { ...typography.display, color: colors.text, marginBottom: 8 },
-  lead: { ...typography.body, color: colors.textSecondary, marginBottom: 20 },
-  amountCard: {
-    backgroundColor: colors.glass.surfaceStrong,
-    borderColor: colors.glass.border,
-    marginBottom: 16,
-  },
+  title: { ...typography.display, color: colors.onBackground, marginBottom: 10 },
+  lead: { ...typography.body, color: colors.onBackgroundMuted, marginBottom: 24, lineHeight: 22 },
+  amountCard: { marginBottom: 20 },
   amountLabel: { ...typography.label, color: colors.textMuted, marginBottom: 8 },
-  quickLabel: { ...typography.caption, color: colors.textSecondary, marginBottom: 8, marginTop: 4 },
+  quickLabel: { ...typography.caption, color: colors.textSecondary, marginBottom: 10, marginTop: 4 },
   quickRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  quickChip: {
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderRadius: colors.radius.full,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
-  },
-  quickChipActive: { borderColor: colors.accent, backgroundColor: colors.accentLight },
-  quickChipText: { fontFamily: fonts.semibold, fontSize: 13, color: colors.textSecondary },
-  quickChipTextActive: { color: colors.accent },
-  trustRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 16 },
-  trustText: { ...typography.caption, color: colors.textMuted, flex: 1 },
-  error: { fontFamily: fonts.medium, color: colors.error, marginBottom: 12 },
-  waitingWrap: { flex: 1, justifyContent: 'center', paddingVertical: 48, gap: 12 },
+  trustRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 20 },
+  trustText: { ...typography.caption, color: colors.onBackgroundMuted, flex: 1 },
+  error: { fontFamily: fonts.medium, color: '#FECACA', marginBottom: 12 },
+  waitingWrap: { flex: 1, justifyContent: 'center', paddingVertical: 48, gap: 16 },
   waitingIcon: {
     alignSelf: 'center',
     width: 72,
     height: 72,
     borderRadius: 36,
-    backgroundColor: colors.accentLight,
+    backgroundColor: colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 8,
   },
-  waitingTitle: { ...typography.title, color: colors.text, textAlign: 'center' },
-  waitingLead: { ...typography.body, color: colors.textSecondary, textAlign: 'center', marginBottom: 12 },
+  waitingTitle: { ...typography.title, color: colors.onBackground, textAlign: 'center' },
+  waitingLead: {
+    ...typography.body,
+    color: colors.onBackgroundMuted,
+    textAlign: 'center',
+    marginBottom: 12,
+    lineHeight: 22,
+  },
 });

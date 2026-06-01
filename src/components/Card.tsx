@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, View, type ViewProps } from 'react-native';
 
 import { colors } from '../theme/colors';
+import { spacing } from '../theme/spacing';
 
 type Props = ViewProps & {
   onPress?: () => void;
@@ -28,17 +29,12 @@ export function Card({ children, onPress, style, ...rest }: Props) {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.surface,
-    borderRadius: 16,
-    padding: 16,
+    borderRadius: colors.radius.lg,
+    padding: spacing.card,
     borderWidth: 1,
-    borderColor: colors.border,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 8,
-    elevation: 2,
+    borderColor: colors.borderOnSurface,
   },
   pressed: {
-    opacity: 0.92,
+    opacity: 0.94,
   },
 });

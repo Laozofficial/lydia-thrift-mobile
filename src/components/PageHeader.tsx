@@ -1,20 +1,25 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { colors } from '../theme/colors';
-import { fonts, typography } from '../theme/typography';
+import { typography } from '../theme/typography';
+import { spacing } from '../theme/spacing';
 
 type Props = {
   title: string;
   subtitle?: string;
   right?: React.ReactNode;
+  /** White text on wine background (default) */
+  onBackground?: boolean;
 };
 
-export function PageHeader({ title, subtitle, right }: Props) {
+export function PageHeader({ title, subtitle, right, onBackground = true }: Props) {
   return (
     <View style={styles.row}>
       <View style={styles.textWrap}>
-        <Text style={styles.title}>{title}</Text>
-        {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
+        <Text style={[styles.title, onBackground && styles.titleOnBg]}>{title}</Text>
+        {subtitle ? (
+          <Text style={[styles.subtitle, onBackground && styles.subtitleOnBg]}>{subtitle}</Text>
+        ) : null}
       </View>
       {right}
     </View>
@@ -26,8 +31,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
-    marginBottom: 16,
-    gap: 12,
+    marginBottom: spacing.lg,
+    gap: spacing.sm,
   },
   textWrap: { flex: 1 },
   title: {
@@ -35,10 +40,13 @@ const styles = StyleSheet.create({
     fontSize: colors.font.xxl,
     color: colors.text,
   },
+  titleOnBg: { color: colors.onBackground },
   subtitle: {
     ...typography.body,
     fontSize: colors.font.sm,
     color: colors.textSecondary,
-    marginTop: 4,
+    marginTop: 8,
+    lineHeight: 20,
   },
+  subtitleOnBg: { color: colors.onBackgroundMuted },
 });

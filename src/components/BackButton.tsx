@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
 
 import { colors } from '../theme/colors';
+import { fonts, typography } from '../theme/typography';
 
 type Props = {
   onPress: () => void;
@@ -21,23 +22,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'flex-start',
-    gap: 4,
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-    borderRadius: 999,
-    backgroundColor: colors.accentLight,
+    gap: 6,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: colors.radius.full,
+    backgroundColor: colors.surfaceMuted,
     borderWidth: 1,
-    borderColor: colors.accent,
-    marginBottom: 8,
+    borderColor: colors.border,
+    marginBottom: 12,
   },
   arrow: {
     fontSize: 16,
-    color: colors.accent,
-    fontWeight: '700',
+    color: colors.onBackground,
+    fontFamily: fonts.bold,
   },
   label: {
+    ...typography.caption,
+    color: colors.onBackground,
+    fontFamily: fonts.semibold,
+    textTransform: 'none',
+    letterSpacing: 0,
     fontSize: 13,
-    color: colors.accent,
-    fontWeight: '600',
   },
 });

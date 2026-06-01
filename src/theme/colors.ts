@@ -1,20 +1,30 @@
-/** Lydia Thrift design tokens — twelveAI-style structure, thrift brand palette */
+/** Lydia's Thrift — wine (#6B0F1A) screen background, white content surfaces */
 export const colors = {
   primary: '#6B0F1A',
   accent: '#6B0F1A',
-  accentLight: '#F5E9DA',
   accentDark: '#4F0B14',
-  secondary: '#F5E9DA',
 
-  background: '#FFF9F2',
+  /** Only app / screen background */
+  background: '#6B0F1A',
+
+  /** Cards, inputs, tab bar */
   surface: '#FFFFFF',
-  surfaceVariant: '#FDF1E6',
+  surfaceMuted: 'rgba(255,255,255,0.14)',
 
+  cream: '#F5E9DA',
+
+  /** Text on wine background */
+  onBackground: '#FFFFFF',
+  onBackgroundMuted: 'rgba(255,255,255,0.78)',
+  onBackgroundSubtle: 'rgba(255,255,255,0.55)',
+
+  /** Text on white surfaces */
   text: '#2D0A10',
   textSecondary: '#6D4950',
   textMuted: '#9B777E',
 
-  border: '#EAD9CC',
+  border: 'rgba(255,255,255,0.22)',
+  borderOnSurface: '#E8D5C8',
   borderFocus: '#6B0F1A',
 
   success: '#10B981',
@@ -24,16 +34,21 @@ export const colors = {
   error: '#EF4444',
   errorBg: '#FEF2F2',
 
+  /** @deprecated use surfaceMuted on wine screens */
+  accentLight: 'rgba(255,255,255,0.16)',
+  secondary: '#FFFFFF',
+  surfaceVariant: '#F7EDE4',
+
   glass: {
-    surface: 'rgba(255,255,255,0.78)',
-    surfaceStrong: 'rgba(255,255,255,0.92)',
-    border: 'rgba(107,15,26,0.18)',
+    surface: 'rgba(255,255,255,0.92)',
+    surfaceStrong: '#FFFFFF',
+    border: 'rgba(255,255,255,0.35)',
   },
 
   radius: {
-    sm: 8,
-    md: 12,
-    lg: 16,
+    sm: 10,
+    md: 14,
+    lg: 18,
     xl: 24,
     xxl: 32,
     full: 9999,

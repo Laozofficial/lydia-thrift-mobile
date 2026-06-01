@@ -21,6 +21,7 @@ import { KeyboardAvoidingContainer } from '../../components/KeyboardAwareScrollV
 import { TextField } from '../../components/TextField';
 import type { WalletStackParamList } from '../../navigation/types';
 import { colors } from '../../theme/colors';
+import { spacing } from '../../theme/spacing';
 import { fonts, typography } from '../../theme/typography';
 import { formatDate, formatNaira, transactionLabel } from '../../utils/format';
 
@@ -101,7 +102,11 @@ export function WalletScreen({ navigation }: Props) {
       data={transactions}
       keyExtractor={(item) => String(item.id)}
       refreshControl={
-        <RefreshControl refreshing={isRefreshing} onRefresh={() => load(true)} />
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={() => load(true)}
+          tintColor={colors.onBackground}
+        />
       }
       ListHeaderComponent={
         <View>
@@ -122,6 +127,7 @@ export function WalletScreen({ navigation }: Props) {
             <Button
               title="Bank account"
               variant="outline"
+              tone="onBackground"
               onPress={() => navigation.navigate('BankAccount')}
               style={styles.actionBtn}
             />
@@ -158,6 +164,7 @@ export function WalletScreen({ navigation }: Props) {
               <Button
                 title="Transfer"
                 variant="outline"
+                tone="onSurface"
                 loading={isTransferring}
                 onPress={handleTransfer}
               />
@@ -200,29 +207,33 @@ export function WalletScreen({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   list: { flex: 1, backgroundColor: colors.background },
-  content: { padding: 16, paddingTop: 8, paddingBottom: 120 },
+  content: {
+    paddingHorizontal: spacing.screenX,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.screenBottom,
+  },
   balanceCard: {
-    backgroundColor: colors.accent,
-    borderColor: colors.accentDark,
-    marginBottom: 12,
+    backgroundColor: colors.surface,
+    borderColor: colors.borderOnSurface,
+    marginBottom: spacing.md,
     borderRadius: colors.radius.xl,
   },
-  balanceLabel: { ...typography.label, color: 'rgba(255,255,255,0.75)' },
-  balance: { fontFamily: fonts.display, fontSize: 36, color: '#fff', marginTop: 6, letterSpacing: -0.8 },
-  policy: { ...typography.caption, color: 'rgba(255,255,255,0.7)', marginTop: 10 },
+  balanceLabel: { ...typography.label, color: colors.textMuted },
+  balance: { fontFamily: fonts.display, fontSize: 36, color: colors.primary, marginTop: 8, letterSpacing: -0.8 },
+  policy: { ...typography.caption, color: colors.textSecondary, marginTop: 12, lineHeight: 18 },
   actions: { flexDirection: 'row', gap: 8, marginBottom: 12 },
   actionBtn: { flex: 1 },
-  bankPreview: { marginBottom: 12, backgroundColor: colors.glass.surfaceStrong, borderColor: colors.glass.border },
+  bankPreview: { marginBottom: spacing.md },
   bankLabel: { ...typography.label, color: colors.textMuted },
   bankText: { ...typography.subtitle, color: colors.text, marginTop: 4 },
   bankName: { ...typography.body, fontSize: 13, color: colors.textSecondary, marginTop: 2 },
   bankMissing: { marginBottom: 12, backgroundColor: colors.warningBg, borderColor: colors.warning },
   bankMissingText: { fontFamily: fonts.semibold, color: colors.warning },
   transferCard: { marginBottom: 12 },
-  sectionTitle: { ...typography.subtitle, color: colors.text, marginBottom: 10, marginTop: 4 },
-  success: { fontFamily: fonts.semibold, color: colors.success, marginBottom: 8 },
-  error: { fontFamily: fonts.medium, color: colors.error, marginBottom: 8 },
-  empty: { ...typography.body, color: colors.textMuted, textAlign: 'center', marginTop: 16 },
+  sectionTitle: { ...typography.subtitle, color: colors.onBackground, marginBottom: spacing.sm, marginTop: spacing.xs },
+  success: { fontFamily: fonts.semibold, color: '#6EE7B7', marginBottom: 8 },
+  error: { fontFamily: fonts.medium, color: '#FECACA', marginBottom: 8 },
+  empty: { ...typography.body, color: colors.onBackgroundMuted, textAlign: 'center', marginTop: 16 },
   txCard: { marginBottom: 8 },
   txHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   txType: { fontFamily: fonts.semibold, color: colors.text, flex: 1 },

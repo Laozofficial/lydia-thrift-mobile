@@ -56,8 +56,9 @@ export function InstallmentScheduleList({
               <Text style={styles.amount}>{formatNaira(row.amount_naira)}</Text>
               {!isPreview && !isPaid && onPay && 'id' in row ? (
                 <Button
-                  title="Pay"
+                  title="Pay from wallet"
                   variant="outline"
+                  tone="onSurface"
                   loading={payingId === row.id}
                   onPress={() => onPay(row.id, row.amount_naira)}
                   style={styles.payBtn}
@@ -82,32 +83,32 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: colors.accent,
+    backgroundColor: colors.primary,
     borderWidth: 2,
-    borderColor: colors.accentLight,
+    borderColor: colors.surfaceVariant,
   },
   dotPaid: { backgroundColor: colors.success },
   line: {
     flex: 1,
     width: 2,
-    backgroundColor: colors.border,
+    backgroundColor: colors.borderOnSurface,
     marginTop: 4,
     minHeight: 40,
   },
   body: {
     flex: 1,
-    backgroundColor: colors.glass.surfaceStrong,
+    backgroundColor: colors.surface,
     borderRadius: colors.radius.lg,
     borderWidth: 1,
-    borderColor: colors.glass.border,
-    padding: 14,
-    marginBottom: 10,
+    borderColor: colors.borderOnSurface,
+    padding: 18,
+    marginBottom: 12,
   },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   period: { fontSize: 15, fontWeight: '700', color: colors.text },
   status: { fontSize: 12, fontWeight: '700', textTransform: 'capitalize' },
   date: { fontSize: 13, color: colors.textSecondary, marginTop: 4 },
-  amount: { fontSize: 16, fontWeight: '800', color: colors.accent, marginTop: 4 },
-  payBtn: { marginTop: 12, minHeight: 44 },
+  amount: { fontSize: 16, fontWeight: '800', color: colors.primary, marginTop: 4 },
+  payBtn: { marginTop: 12, minHeight: 48 },
   paidAt: { marginTop: 8, fontSize: 12, color: colors.success, fontWeight: '600' },
 });

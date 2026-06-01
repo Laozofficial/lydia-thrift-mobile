@@ -44,6 +44,19 @@ export interface PaymentSchedule {
   paid_at: string | null;
 }
 
+export interface EnrollmentShipping {
+  status: string;
+  status_label: string;
+  carrier: string | null;
+  tracking_number: string | null;
+  notes: string | null;
+  address: string | null;
+  phone: string | null;
+  shipped_at: string | null;
+  delivered_at: string | null;
+  completed_at: string | null;
+}
+
 export interface ThriftEnrollment {
   id: number;
   product: Product;
@@ -52,6 +65,9 @@ export interface ThriftEnrollment {
   custom_installment_amount_naira: number | null;
   status: 'active' | 'completed' | 'cancelled';
   delivery_status?: 'pending' | 'processing' | 'in_transit' | 'delivered' | string;
+  delivery_status_label?: string;
+  shipped_at?: string | null;
+  shipping?: EnrollmentShipping;
   total_naira: number;
   delivery_fee_naira: number;
   installment_count: number;

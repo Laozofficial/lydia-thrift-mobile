@@ -11,9 +11,9 @@ export const fonts = {
 export const typography = {
   display: {
     fontFamily: fonts.display,
-    fontSize: 28,
-    letterSpacing: -0.6,
-    lineHeight: 34,
+    fontSize: 30,
+    letterSpacing: -0.7,
+    lineHeight: 36,
   },
   title: {
     fontFamily: fonts.bold,

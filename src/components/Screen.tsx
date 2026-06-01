@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { KeyboardAwareScrollView } from './KeyboardAwareScrollView';
 import { colors } from '../theme/colors';
+import { spacing } from '../theme/spacing';
 
 type Props = ViewProps & {
   scroll?: boolean;
@@ -36,12 +37,12 @@ const styles = StyleSheet.create({
   },
   padded: {
     flex: 1,
-    paddingTop: 8,
-    paddingHorizontal: 20,
-    paddingBottom: 108,
+    paddingTop: spacing.sm,
+    paddingHorizontal: spacing.screenX,
+    paddingBottom: spacing.screenBottom,
   },
   scrollContent: {
     flexGrow: 1,
-    paddingBottom: 32,
+    paddingBottom: spacing.xl,
   },
 });

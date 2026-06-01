@@ -46,5 +46,5 @@ export function FontProvider({ children }: Props) {
 }
 
 const styles = StyleSheet.create({
-  splash: { flex: 1, backgroundColor: '#F5E9DA' },
+  splash: { flex: 1, backgroundColor: '#6B0F1A' },
 });

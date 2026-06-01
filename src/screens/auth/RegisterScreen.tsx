@@ -76,7 +76,7 @@ export function RegisterScreen({ navigation }: Props) {
       />
 
       {error ? <Text style={styles.error}>{error}</Text> : null}
-      <Button title="Create account" loading={isSubmitting} onPress={handleSubmit} />
+      <Button title="Create account" tone="onSurface" loading={isSubmitting} onPress={handleSubmit} />
       <Pressable onPress={() => navigation.navigate('Login')} style={styles.linkWrap}>
         <Text style={styles.link}>
           Already have an account? <Text style={styles.linkBold}>Sign in</Text>

@@ -20,6 +20,7 @@ import { TextField } from '../../components/TextField';
 import { useAuth } from '../../context/AuthContext';
 import type { ProfileStackParamList } from '../../navigation/types';
 import { colors } from '../../theme/colors';
+import { spacing } from '../../theme/spacing';
 import { fonts, typography } from '../../theme/typography';
 
 type Props = NativeStackScreenProps<ProfileStackParamList, 'ProfileHome'>;
@@ -191,6 +192,7 @@ export function ProfileScreen({}: Props) {
             />
             <Button
               title="Save personal info"
+              tone="onSurface"
               loading={isSavingProfile}
               onPress={saveProfile}
               style={styles.sectionBtn}
@@ -214,6 +216,7 @@ export function ProfileScreen({}: Props) {
             <Button
               title="Save delivery details"
               variant="outline"
+              tone="onSurface"
               loading={isSavingProfile}
               onPress={saveProfile}
               style={styles.sectionBtn}
@@ -252,6 +255,7 @@ export function ProfileScreen({}: Props) {
             <Button
               title={bank ? 'Update bank account' : 'Save bank account'}
               variant="outline"
+              tone="onSurface"
               loading={isSavingBank}
               onPress={saveBank}
               style={styles.sectionBtn}
@@ -260,7 +264,14 @@ export function ProfileScreen({}: Props) {
         </View>
 
         <View style={styles.logoutWrap}>
-          <Button title="Log out" variant="outline" onPress={confirmLogout} style={styles.logoutBtn} />
+          <Button
+            title="Log out"
+            variant="outline"
+            tone="onBackground"
+            danger
+            onPress={confirmLogout}
+            style={styles.logoutBtn}
+          />
         </View>
       </KeyboardAwareScrollView>
     </SafeAreaView>
@@ -269,14 +280,17 @@ export function ProfileScreen({}: Props) {
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.background },
-  content: { padding: 16, paddingBottom: 120 },
+  content: {
+    paddingHorizontal: spacing.screenX,
+    paddingBottom: spacing.screenBottom,
+  },
   heroCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 16,
-    marginBottom: 20,
-    backgroundColor: colors.glass.surfaceStrong,
-    borderColor: colors.glass.border,
+    gap: spacing.md,
+    marginBottom: spacing.lg,
+    backgroundColor: colors.surface,
+    borderColor: colors.borderOnSurface,
   },
   avatar: {
     width: 64,
@@ -296,14 +310,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: colors.radius.full,
-    backgroundColor: colors.accentLight,
+    backgroundColor: colors.surfaceVariant,
   },
-  roleText: { ...typography.caption, fontFamily: fonts.bold, color: colors.accent, textTransform: 'capitalize' },
-  section: { marginBottom: 18 },
-  sectionLabel: { ...typography.label, color: colors.textMuted, marginBottom: 8, marginLeft: 4 },
+  roleText: { ...typography.caption, fontFamily: fonts.bold, color: colors.primary, textTransform: 'capitalize' },
+  section: { marginBottom: spacing.lg },
+  sectionLabel: { ...typography.label, color: colors.onBackgroundMuted, marginBottom: 10, marginLeft: 4 },
   sectionCard: {
-    backgroundColor: colors.glass.surfaceStrong,
-    borderColor: colors.glass.border,
+    backgroundColor: colors.surface,
+    borderColor: colors.borderOnSurface,
     paddingTop: 14,
     paddingBottom: 8,
   },
@@ -312,7 +326,5 @@ const styles = StyleSheet.create({
   success: { fontFamily: fonts.semibold, color: colors.success, marginBottom: 12, textAlign: 'center' },
   error: { fontFamily: fonts.semibold, color: colors.error, marginBottom: 12, textAlign: 'center' },
   logoutWrap: { marginTop: 8, marginBottom: 16 },
-  logoutBtn: {
-    borderColor: colors.error,
-  },
+  logoutBtn: {},
 });

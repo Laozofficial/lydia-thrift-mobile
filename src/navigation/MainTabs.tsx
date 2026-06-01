@@ -14,6 +14,7 @@ import { ProductDetailScreen } from '../screens/shop/ProductDetailScreen';
 import { ShopScreen } from '../screens/shop/ShopScreen';
 import { colors } from '../theme/colors';
 import { fonts } from '../theme/typography';
+import { spacing } from '../theme/spacing';
 import type {
   FavoriteStackParamList,
   MainTabParamList,
@@ -86,7 +87,7 @@ export function MainTabs() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: styles.tabBar,
-        tabBarActiveTintColor: colors.accent,
+        tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarLabelStyle: styles.tabLabel,
         tabBarHideOnKeyboard: true,
@@ -139,21 +140,21 @@ export function MainTabs() {
 const styles = StyleSheet.create({
   tabBar: {
     position: 'absolute',
-    left: 14,
-    right: 14,
-    bottom: 12,
-    height: 64,
-    borderRadius: 26,
-    backgroundColor: colors.glass.surfaceStrong,
+    left: spacing.screenX - 8,
+    right: spacing.screenX - 8,
+    bottom: 14,
+    height: 68,
+    borderRadius: colors.radius.xl,
+    backgroundColor: colors.surface,
     borderTopWidth: 0,
     borderWidth: 1,
-    borderColor: colors.glass.border,
-    paddingTop: 4,
-    elevation: 8,
-    shadowColor: colors.primary,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
+    borderColor: colors.borderOnSurface,
+    paddingTop: 6,
+    elevation: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
   },
-  tabLabel: { fontFamily: fonts.semibold, fontSize: 11, marginBottom: 2 },
+  tabLabel: { fontFamily: fonts.semibold, fontSize: 11, marginBottom: 4 },
 });

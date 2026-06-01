@@ -23,6 +23,7 @@ import { SearchBar } from '../../components/SearchBar';
 import { useAuth } from '../../context/AuthContext';
 import type { ShopStackParamList } from '../../navigation/types';
 import { colors } from '../../theme/colors';
+import { spacing } from '../../theme/spacing';
 import { fonts, typography } from '../../theme/typography';
 import { formatNaira } from '../../utils/format';
 
@@ -37,7 +38,7 @@ export function ShopScreen({ navigation }: Props) {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const cardWidth = (width - 16 * 2 - 10) / 2;
+  const cardWidth = (width - spacing.screenX * 2 - 12) / 2;
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -82,7 +83,11 @@ export function ShopScreen({ navigation }: Props) {
       numColumns={2}
       columnWrapperStyle={styles.row}
       refreshControl={
-        <RefreshControl refreshing={isRefreshing} onRefresh={() => loadProducts(true)} />
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={() => loadProducts(true)}
+          tintColor={colors.onBackground}
+        />
       }
       ListHeaderComponent={
         <View>
@@ -144,22 +149,26 @@ export function ShopScreen({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   list: { flex: 1, backgroundColor: colors.background },
-  content: { padding: 16, paddingTop: 8, paddingBottom: 120 },
-  row: { gap: 10, marginBottom: 10 },
+  content: {
+    paddingHorizontal: spacing.screenX,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.screenBottom,
+  },
+  row: { gap: 12, marginBottom: 12 },
   card: {
     borderRadius: colors.radius.lg,
     borderWidth: 1,
-    borderColor: colors.glass.border,
-    backgroundColor: colors.glass.surfaceStrong,
+    borderColor: colors.borderOnSurface,
+    backgroundColor: colors.surface,
     overflow: 'hidden',
   },
-  image: { width: '100%', height: 130, backgroundColor: colors.surfaceVariant },
+  image: { width: '100%', height: 140, backgroundColor: colors.surfaceVariant },
   imagePlaceholder: { alignItems: 'center', justifyContent: 'center' },
-  placeholderText: { fontFamily: fonts.bold, color: colors.accent, fontSize: 18 },
-  cardBody: { padding: 10, gap: 4 },
-  name: { fontFamily: fonts.semibold, fontSize: 13, color: colors.text, minHeight: 34, lineHeight: 17 },
-  price: { fontFamily: fonts.bold, fontSize: 14, color: colors.accent },
+  placeholderText: { fontFamily: fonts.bold, color: colors.primary, fontSize: 18 },
+  cardBody: { padding: 14, gap: 6 },
+  name: { fontFamily: fonts.semibold, fontSize: 13, color: colors.text, minHeight: 36, lineHeight: 18 },
+  price: { fontFamily: fonts.bold, fontSize: 14, color: colors.primary },
   meta: { ...typography.caption, color: colors.textMuted },
-  empty: { alignItems: 'center', marginTop: 40, paddingHorizontal: 24 },
-  emptyText: { ...typography.body, color: colors.textSecondary, textAlign: 'center' },
+  empty: { alignItems: 'center', marginTop: spacing.xxl, paddingHorizontal: spacing.lg },
+  emptyText: { ...typography.body, color: colors.onBackgroundMuted, textAlign: 'center' },
 });

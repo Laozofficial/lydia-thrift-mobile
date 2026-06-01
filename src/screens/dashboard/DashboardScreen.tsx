@@ -17,10 +17,12 @@ import { payInstallmentFromWallet } from '../../api/wallet';
 import type { Dashboard } from '../../api/types';
 import { Button } from '../../components/Button';
 import { Card } from '../../components/Card';
+import { DeliveryStatusBadge } from '../../components/DeliveryStatusBadge';
 import { LoadingView } from '../../components/LoadingView';
 import { PageHeader } from '../../components/PageHeader';
 import type { PlansStackParamList } from '../../navigation/types';
 import { colors } from '../../theme/colors';
+import { spacing } from '../../theme/spacing';
 import { fonts, typography } from '../../theme/typography';
 import { durationLabel, formatDate, formatNaira } from '../../utils/format';
 
@@ -83,7 +85,11 @@ export function DashboardScreen({ navigation }: Props) {
       data={dashboard?.enrollments ?? []}
       keyExtractor={(item) => String(item.id)}
       refreshControl={
-        <RefreshControl refreshing={isRefreshing} onRefresh={() => load(true)} />
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={() => load(true)}
+          tintColor={colors.onBackground}
+        />
       }
       ListHeaderComponent={
         <View>
@@ -139,7 +145,8 @@ export function DashboardScreen({ navigation }: Props) {
                       {formatNaira(p.next_payment!.amount_naira)}
                     </Text>
                     <Button
-                      title="Pay"
+                      title="Pay from wallet"
+                      tone="onSurface"
                       loading={payingId === p.next_payment!.schedule_id}
                       onPress={() => payNext(p.next_payment!.schedule_id)}
                       style={styles.payBtn}
@@ -182,9 +189,14 @@ export function DashboardScreen({ navigation }: Props) {
                 {formatNaira(item.amount_per_installment_naira)} each
               </Text>
               {item.status === 'completed' ? (
-                <Text style={styles.deliveryMeta}>
-                  Delivery: {(item.delivery_status ?? 'pending').replace('_', ' ')}
-                </Text>
+                <>
+                  <DeliveryStatusBadge enrollment={item} />
+                  {item.shipping?.tracking_number ? (
+                    <Text style={styles.trackingHint} numberOfLines={1}>
+                      {item.shipping.tracking_number}
+                    </Text>
+                  ) : null}
+                </>
               ) : null}
               <Text style={styles.enrollmentTotal}>Total {formatNaira(item.total_naira)}</Text>
             </View>
@@ -218,9 +230,9 @@ function StatCard({
 
 function StatusBadge({ status }: { status: string }) {
   const bg =
-    status === 'completed' ? colors.successBg : status === 'active' ? colors.accentLight : colors.surfaceVariant;
+    status === 'completed' ? colors.successBg : status === 'active' ? colors.surfaceVariant : colors.surfaceVariant;
   const color =
-    status === 'completed' ? colors.success : status === 'active' ? colors.accent : colors.textMuted;
+    status === 'completed' ? colors.success : status === 'active' ? colors.primary : colors.textMuted;
   return (
     <View style={[styles.badge, { backgroundColor: bg }]}>
       <Text style={[styles.badgeText, { color }]}>{status}</Text>
@@ -230,56 +242,69 @@ function StatusBadge({ status }: { status: string }) {
 
 const styles = StyleSheet.create({
   list: { flex: 1, backgroundColor: colors.background },
-  content: { padding: 16, paddingTop: 8, paddingBottom: 120 },
-  statsRow: { flexDirection: 'row', gap: 8, marginBottom: 16 },
-  tabs: { flexDirection: 'row', gap: 8, marginBottom: 14 },
+  content: {
+    paddingHorizontal: spacing.screenX,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.screenBottom,
+  },
+  statsRow: { flexDirection: 'row', gap: spacing.sm, marginBottom: spacing.lg },
+  tabs: { flexDirection: 'row', gap: spacing.sm, marginBottom: spacing.md },
   tabBtn: {
     flex: 1,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: colors.borderOnSurface,
     borderRadius: colors.radius.full,
-    paddingVertical: 10,
+    paddingVertical: 12,
     alignItems: 'center',
     backgroundColor: colors.surface,
   },
-  tabBtnActive: { backgroundColor: colors.accentLight, borderColor: colors.accent },
+  tabBtnActive: {
+    borderColor: colors.primary,
+    borderWidth: 2,
+    backgroundColor: colors.surfaceVariant,
+  },
   tabBtnText: { fontFamily: fonts.semibold, fontSize: 13, color: colors.textSecondary },
-  tabBtnTextActive: { color: colors.accent },
+  tabBtnTextActive: { color: colors.primary, fontFamily: fonts.bold },
   stat: {
     flex: 1,
-    backgroundColor: colors.glass.surfaceStrong,
+    backgroundColor: colors.surface,
     borderRadius: colors.radius.lg,
-    padding: 12,
+    padding: spacing.md,
     borderWidth: 1,
-    borderColor: colors.glass.border,
+    borderColor: colors.borderOnSurface,
   },
-  statAccent: { backgroundColor: colors.accentLight, borderColor: colors.accent },
+  statAccent: { borderColor: colors.primary },
   statDanger: { borderColor: colors.error },
   statLabel: { ...typography.label, color: colors.textMuted },
-  statValue: { fontFamily: fonts.bold, fontSize: 14, color: colors.text, marginTop: 4 },
-  statValueAccent: { color: colors.accent },
-  section: { marginBottom: 8 },
-  sectionTitle: { ...typography.subtitle, color: colors.text, marginBottom: 10 },
-  dueCard: { marginBottom: 10 },
+  statValue: { fontFamily: fonts.bold, fontSize: 15, color: colors.text, marginTop: 6 },
+  statValueAccent: { color: colors.primary },
+  section: { marginBottom: spacing.sm },
+  sectionTitle: { ...typography.subtitle, color: colors.onBackground, marginBottom: spacing.sm },
+  dueCard: { marginBottom: spacing.sm },
   dueProduct: { ...typography.subtitle, color: colors.text },
-  dueMeta: { ...typography.body, fontSize: 13, color: colors.textSecondary, marginTop: 4, marginBottom: 12 },
-  payBtn: { marginTop: 4 },
-  enrollmentCard: { marginBottom: 10 },
-  enrollmentTop: { flexDirection: 'row', gap: 12 },
-  enrollmentImage: { width: 74, height: 74, borderRadius: colors.radius.md, backgroundColor: colors.surfaceVariant },
+  dueMeta: { ...typography.body, fontSize: 13, color: colors.textSecondary, marginTop: 6, marginBottom: spacing.md },
+  payBtn: { marginTop: spacing.xs },
+  enrollmentCard: { marginBottom: spacing.md },
+  enrollmentTop: { flexDirection: 'row', gap: spacing.md },
+  enrollmentImage: {
+    width: 80,
+    height: 80,
+    borderRadius: colors.radius.md,
+    backgroundColor: colors.surfaceVariant,
+  },
   enrollmentImageFallback: { alignItems: 'center', justifyContent: 'center' },
-  enrollmentImageFallbackText: { fontFamily: fonts.bold, color: colors.accent, fontSize: 16 },
+  enrollmentImageFallbackText: { fontFamily: fonts.bold, color: colors.primary, fontSize: 16 },
   enrollmentInfo: { flex: 1 },
-  enrollmentHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  enrollmentName: { ...typography.subtitle, color: colors.text, flex: 1, marginRight: 8 },
-  enrollmentMeta: { ...typography.body, fontSize: 13, color: colors.textSecondary, marginTop: 6 },
-  deliveryMeta: { ...typography.caption, color: colors.accent, marginTop: 4, textTransform: 'capitalize' },
-  enrollmentTotal: { fontFamily: fonts.semibold, fontSize: 14, color: colors.accent, marginTop: 6 },
-  badge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: colors.radius.full },
+  enrollmentHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 },
+  enrollmentName: { ...typography.subtitle, color: colors.text, flex: 1 },
+  enrollmentMeta: { ...typography.body, fontSize: 13, color: colors.textSecondary, marginTop: 8, lineHeight: 19 },
+  trackingHint: { ...typography.caption, color: colors.textMuted, fontSize: 11, marginTop: 4 },
+  enrollmentTotal: { fontFamily: fonts.semibold, fontSize: 14, color: colors.primary, marginTop: 10 },
+  badge: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: colors.radius.full },
   badgeText: { fontFamily: fonts.bold, fontSize: 11, textTransform: 'capitalize' },
-  success: { fontFamily: fonts.semibold, color: colors.success, marginBottom: 8 },
-  error: { fontFamily: fonts.medium, color: colors.error, marginBottom: 8 },
-  empty: { alignItems: 'center', marginTop: 32, paddingHorizontal: 24 },
-  emptyTitle: { ...typography.title, fontSize: 18, color: colors.text },
-  emptyText: { ...typography.body, textAlign: 'center', color: colors.textSecondary, marginTop: 8 },
+  success: { fontFamily: fonts.semibold, color: '#6EE7B7', marginBottom: spacing.sm },
+  error: { fontFamily: fonts.medium, color: '#FECACA', marginBottom: spacing.sm },
+  empty: { alignItems: 'center', marginTop: spacing.xxl, paddingHorizontal: spacing.lg },
+  emptyTitle: { ...typography.title, fontSize: 18, color: colors.onBackground },
+  emptyText: { ...typography.body, textAlign: 'center', color: colors.onBackgroundMuted, marginTop: 10, lineHeight: 22 },
 });

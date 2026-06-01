@@ -8,6 +8,7 @@ import type { Product } from '../../api/types';
 import { LoadingView } from '../../components/LoadingView';
 import type { FavoriteStackParamList } from '../../navigation/types';
 import { colors } from '../../theme/colors';
+import { spacing } from '../../theme/spacing';
 import { formatNaira } from '../../utils/format';
 
 type Props = NativeStackScreenProps<FavoriteStackParamList, 'Favorites'>;
@@ -77,11 +78,14 @@ export function FavoritesScreen({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.background },
-  content: { padding: 16, paddingBottom: 120 },
+  content: {
+    paddingHorizontal: spacing.screenX,
+    paddingBottom: spacing.screenBottom,
+  },
   card: {
     flexDirection: 'row',
     backgroundColor: colors.surface,
-    borderColor: colors.border,
+    borderColor: colors.borderOnSurface,
     borderWidth: 1,
     borderRadius: 14,
     padding: 10,
@@ -93,8 +97,8 @@ const styles = StyleSheet.create({
   placeholderText: { color: colors.accent, fontWeight: '800' },
   body: { flex: 1 },
   name: { fontSize: 15, fontWeight: '700', color: colors.text },
-  price: { fontSize: 14, fontWeight: '700', color: colors.accent, marginTop: 4 },
+  price: { fontSize: 14, fontWeight: '700', color: colors.primary, marginTop: 4 },
   removeBtn: { alignSelf: 'flex-start', marginTop: 8 },
   removeBtnText: { color: colors.error, fontWeight: '600' },
-  empty: { textAlign: 'center', color: colors.textMuted, marginTop: 20 },
+  empty: { textAlign: 'center', color: colors.onBackgroundMuted, marginTop: spacing.xl },
 });

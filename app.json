@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#F5E9DA"
+      "backgroundColor": "#6B0F1A"
     },
     "ios": {
       "supportsTablet": false,
@@ -29,7 +29,7 @@
       "softwareKeyboardLayoutMode": "resize",
       "usesCleartextTraffic": true,
       "adaptiveIcon": {
-        "backgroundColor": "#F5E9DA",
+        "backgroundColor": "#6B0F1A",
         "foregroundImage": "./assets/android-icon-foreground.png"
       },
       "predictiveBackGestureEnabled": false,
@@ -56,7 +56,7 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#F5E9DA",
+          "backgroundColor": "#6B0F1A",
           "image": "./assets/splash-icon.png",
           "imageWidth": 200
         }

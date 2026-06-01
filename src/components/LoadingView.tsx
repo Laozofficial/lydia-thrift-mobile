@@ -6,7 +6,7 @@ import { typography } from '../theme/typography';
 export function LoadingView({ message = 'Loading…' }: { message?: string }) {
   return (
     <View style={styles.wrap}>
-      <ActivityIndicator size="large" color={colors.accent} />
+      <ActivityIndicator size="large" color={colors.onBackground} />
       <Text style={styles.text}>{message}</Text>
     </View>
   );
@@ -18,11 +18,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.background,
-    gap: 12,
+    gap: 16,
   },
   text: {
     ...typography.body,
     fontSize: 14,
-    color: colors.textSecondary,
+    color: colors.onBackgroundMuted,
   },
 });

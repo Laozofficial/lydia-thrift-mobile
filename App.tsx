@@ -15,7 +15,7 @@ export default function App() {
       <FontProvider>
         <AuthProvider>
           <RootNavigator />
-          <StatusBar style="dark" />
+          <StatusBar style="light" />
         </AuthProvider>
       </FontProvider>
     </SafeAreaProvider>

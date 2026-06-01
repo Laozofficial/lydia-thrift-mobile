@@ -58,7 +58,7 @@ export function LoginScreen({ navigation }: Props) {
           onChangeText={setPassword}
         />
         {error ? <Text style={styles.error}>{error}</Text> : null}
-        <Button title="Sign in" loading={isSubmitting} onPress={handleSubmit} />
+        <Button title="Sign in" tone="onSurface" loading={isSubmitting} onPress={handleSubmit} />
         <Pressable onPress={() => navigation.navigate('Register')} style={styles.linkWrap}>
           <Text style={styles.link}>
             New here? <Text style={styles.linkBold}>Create an account</Text>

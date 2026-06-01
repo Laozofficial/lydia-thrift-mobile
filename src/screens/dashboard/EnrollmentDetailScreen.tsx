@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { getEnrollment } from '../../api/enrollments';
@@ -7,10 +7,13 @@ import { ApiError } from '../../api/errors';
 import { payInstallmentFromWallet } from '../../api/wallet';
 import type { ThriftEnrollment } from '../../api/types';
 import { BackButton } from '../../components/BackButton';
+import { DeliveryStatusCard } from '../../components/DeliveryStatusCard';
 import { InstallmentScheduleList } from '../../components/InstallmentScheduleList';
 import { LoadingView } from '../../components/LoadingView';
 import type { PlansStackParamList } from '../../navigation/types';
 import { colors } from '../../theme/colors';
+import { spacing } from '../../theme/spacing';
+import { fonts, typography } from '../../theme/typography';
 import { durationLabel, formatDate, formatNaira } from '../../utils/format';
 
 type Props = NativeStackScreenProps<PlansStackParamList, 'EnrollmentDetail'>;
@@ -19,14 +22,17 @@ export function EnrollmentDetailScreen({ route, navigation }: Props) {
   const { enrollmentId } = route.params;
   const [enrollment, setEnrollment] = useState<ThriftEnrollment | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [payingId, setPayingId] = useState<number | null>(null);
 
-  const load = useCallback(async () => {
-    setIsLoading(true);
+  const load = useCallback(async (refresh = false) => {
+    if (refresh) setIsRefreshing(true);
+    else setIsLoading(true);
     try {
       setEnrollment(await getEnrollment(enrollmentId));
     } finally {
       setIsLoading(false);
+      setIsRefreshing(false);
     }
   }, [enrollmentId]);
 
@@ -34,12 +40,17 @@ export function EnrollmentDetailScreen({ route, navigation }: Props) {
     load();
   }, [load]);
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => load(true));
+    return unsubscribe;
+  }, [navigation, load]);
+
   async function paySchedule(scheduleId: number, amount: number) {
     setPayingId(scheduleId);
     try {
       await payInstallmentFromWallet(scheduleId);
       Alert.alert('Paid', `Installment of ${formatNaira(amount)} paid from wallet.`);
-      await load();
+      await load(true);
     } catch (err) {
       Alert.alert(
         'Payment failed',
@@ -50,12 +61,24 @@ export function EnrollmentDetailScreen({ route, navigation }: Props) {
     }
   }
 
-  if (isLoading || !enrollment) return <LoadingView />;
+  if (isLoading && !enrollment) return <LoadingView message="Loading plan…" />;
+
+  if (!enrollment) return <LoadingView message="Plan not found" />;
 
   const paidCount = enrollment.payment_schedules.filter((s) => s.status === 'paid').length;
 
   return (
-    <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={styles.content}
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={() => load(true)}
+          tintColor={colors.onBackground}
+        />
+      }
+    >
       <BackButton onPress={() => navigation.goBack()} />
 
       <View style={styles.hero}>
@@ -73,18 +96,40 @@ export function EnrollmentDetailScreen({ route, navigation }: Props) {
         <Row label="Started" value={formatDate(enrollment.start_date)} />
       </View>
 
-      <Text style={styles.sectionTitle}>Every payment</Text>
+      {enrollment.status === 'active' ? (
+        <View style={styles.shippingNote}>
+          <Text style={styles.shippingNoteTitle}>After you finish paying</Text>
+          <Text style={styles.shippingNoteText}>
+            Delivery tracking opens here once every installment is paid. You will see carrier,
+            tracking number, and status updates from our team.
+          </Text>
+        </View>
+      ) : null}
+
+      <DeliveryStatusCard enrollment={enrollment} />
+
+      <Text style={styles.sectionTitle}>Payment schedule</Text>
       <Text style={styles.sectionHint}>
-        Pay each {(enrollment.duration_type === 'custom' ? enrollment.custom_frequency : enrollment.duration_type) === 'daily'
+        Pay each{' '}
+        {(enrollment.duration_type === 'custom'
+          ? enrollment.custom_frequency
+          : enrollment.duration_type) === 'daily'
           ? 'day'
-          : (enrollment.duration_type === 'custom' ? enrollment.custom_frequency : enrollment.duration_type) === 'weekly'
+          : (enrollment.duration_type === 'custom'
+                ? enrollment.custom_frequency
+                : enrollment.duration_type) === 'weekly'
             ? 'week'
-            : 'month'} from your wallet balance.
+            : 'month'}{' '}
+        from your wallet balance.
       </Text>
 
       <InstallmentScheduleList
         rows={enrollment.payment_schedules}
-        durationType={enrollment.duration_type === 'custom' ? (enrollment.custom_frequency ?? 'weekly') : enrollment.duration_type}
+        durationType={
+          enrollment.duration_type === 'custom'
+            ? (enrollment.custom_frequency ?? 'weekly')
+            : enrollment.duration_type
+        }
         payingId={payingId}
         onPay={paySchedule}
       />
@@ -103,22 +148,49 @@ function Row({ label, value, bold }: { label: string; value: string; bold?: bool
 
 const styles = StyleSheet.create({
   scroll: { flex: 1, backgroundColor: colors.background },
-  content: { padding: 16, paddingTop: 8, paddingBottom: 120 },
-  hero: { marginBottom: 14 },
-  product: { fontSize: colors.font.xl, fontWeight: '800', color: colors.text },
-  meta: { fontSize: colors.font.sm, color: colors.textSecondary, marginTop: 6 },
+  content: {
+    paddingHorizontal: spacing.screenX,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.screenBottom,
+  },
+  hero: { marginBottom: spacing.lg },
+  product: { ...typography.display, fontSize: 26, color: colors.onBackground },
+  meta: { ...typography.body, color: colors.onBackgroundMuted, marginTop: 10 },
   block: {
     borderRadius: colors.radius.lg,
     borderWidth: 1,
-    borderColor: colors.glass.border,
-    backgroundColor: colors.glass.surfaceStrong,
-    padding: 14,
-    marginBottom: 16,
+    borderColor: colors.borderOnSurface,
+    backgroundColor: colors.surface,
+    padding: spacing.card,
+    marginBottom: spacing.lg,
   },
-  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 6 },
-  rowLabel: { color: colors.textSecondary },
-  rowValue: { color: colors.text, fontWeight: '500' },
-  rowValueBold: { fontWeight: '800', color: colors.accent },
-  sectionTitle: { fontSize: 17, fontWeight: '800', color: colors.text },
-  sectionHint: { fontSize: 13, color: colors.textMuted, marginTop: 4, marginBottom: 14, lineHeight: 19 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10 },
+  rowLabel: { ...typography.body, color: colors.textSecondary },
+  rowValue: { ...typography.bodyMedium, color: colors.text },
+  rowValueBold: { fontFamily: fonts.bold, color: colors.primary, fontSize: 17 },
+  shippingNote: {
+    backgroundColor: colors.surfaceMuted,
+    borderRadius: colors.radius.lg,
+    borderWidth: 1,
+    borderColor: colors.border,
+    padding: spacing.card,
+    marginBottom: spacing.lg,
+  },
+  shippingNoteTitle: {
+    ...typography.subtitle,
+    color: colors.onBackground,
+    marginBottom: 8,
+  },
+  shippingNoteText: {
+    ...typography.body,
+    color: colors.onBackgroundMuted,
+    lineHeight: 22,
+  },
+  sectionTitle: { ...typography.title, fontSize: 18, color: colors.onBackground, marginBottom: 8 },
+  sectionHint: {
+    ...typography.body,
+    color: colors.onBackgroundMuted,
+    marginBottom: spacing.md,
+    lineHeight: 22,
+  },
 });

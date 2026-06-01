@@ -5,6 +5,7 @@ import { AppLogo } from './AppLogo';
 import { KeyboardAwareScrollView } from './KeyboardAwareScrollView';
 import { colors } from '../theme/colors';
 import { fonts, typography } from '../theme/typography';
+import { spacing } from '../theme/spacing';
 
 type Props = {
   children: React.ReactNode;
@@ -14,7 +15,6 @@ type Props = {
 export function AuthShell({ children, badges }: Props) {
   return (
     <SafeAreaView style={styles.safe}>
-      <View style={styles.ambientTop} />
       <KeyboardAwareScrollView
         centerContent
         contentContainerStyle={styles.scroll}
@@ -42,45 +42,32 @@ export function AuthShell({ children, badges }: Props) {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.accentLight },
-  ambientTop: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: '40%',
-    backgroundColor: colors.accent,
-    opacity: 0.12,
-  },
+  safe: { flex: 1, backgroundColor: colors.background },
   scroll: {
-    paddingHorizontal: 16,
-    paddingVertical: 24,
+    paddingHorizontal: spacing.screenX,
+    paddingVertical: spacing.xl,
     minHeight: '100%',
   },
-  sheet: { gap: 12, width: '100%' },
-  logo: { marginBottom: 4 },
-  badges: { flexDirection: 'row', gap: 8, paddingHorizontal: 4, justifyContent: 'center' },
+  sheet: { gap: spacing.md, width: '100%' },
+  logo: { marginBottom: spacing.xs },
+  badges: { flexDirection: 'row', gap: spacing.xs, paddingHorizontal: 4, justifyContent: 'center' },
   badge: {
-    backgroundColor: colors.accentLight,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+    backgroundColor: colors.surfaceMuted,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
     borderRadius: colors.radius.full,
     borderWidth: 1,
-    borderColor: colors.glass.border,
+    borderColor: colors.border,
   },
-  badgeMuted: { backgroundColor: colors.glass.surfaceStrong },
-  badgeText: { ...typography.caption, color: colors.accent },
-  badgeTextMuted: { color: colors.textSecondary },
+  badgeMuted: { backgroundColor: 'rgba(255,255,255,0.08)' },
+  badgeText: { ...typography.caption, color: colors.onBackground, fontFamily: fonts.semibold, textTransform: 'none' },
+  badgeTextMuted: { color: colors.onBackgroundMuted },
   card: {
-    backgroundColor: colors.glass.surfaceStrong,
-    borderRadius: colors.radius.xxl,
+    backgroundColor: colors.surface,
+    borderRadius: colors.radius.xl,
     borderWidth: 1,
-    borderColor: colors.glass.border,
-    padding: 24,
-    shadowColor: colors.primary,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.06,
-    shadowRadius: 24,
-    elevation: 4,
+    borderColor: colors.borderOnSurface,
+    padding: spacing.xl,
+    marginTop: spacing.sm,
   },
 });

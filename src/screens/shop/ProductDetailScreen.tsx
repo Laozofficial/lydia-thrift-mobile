@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { Alert, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, StyleSheet, Text, View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { ApiError } from '../../api/errors';
@@ -10,6 +10,7 @@ import type { DurationType, PlanFrequency, Product } from '../../api/types';
 import { BackButton } from '../../components/BackButton';
 import { FavoriteButton } from '../../components/FavoriteButton';
 import { Button } from '../../components/Button';
+import { ChoiceChip } from '../../components/ChoiceChip';
 import { InstallmentScheduleList } from '../../components/InstallmentScheduleList';
 import { LoadingView } from '../../components/LoadingView';
 import type { ShopStackParamList } from '../../navigation/types';
@@ -179,18 +180,16 @@ export function ProductDetailScreen({ route, navigation }: Props) {
         <SummaryRow label="Total" value={formatNaira(total)} bold />
       </View>
 
-      <Text style={styles.blockTitle}>Payment frequency</Text>
+      <Text style={styles.sectionTitle}>Payment frequency</Text>
       <View style={styles.durationRow}>
         {DURATIONS.map((d) => (
-          <Pressable
+          <ChoiceChip
             key={d}
-            style={[styles.chip, duration === d && styles.chipActive]}
+            label={durationLabel(d)}
+            selected={duration === d}
             onPress={() => setDuration(d)}
-          >
-            <Text style={[styles.chipText, duration === d && styles.chipTextActive]}>
-              {durationLabel(d)}
-            </Text>
-          </Pressable>
+            style={styles.chipFlex}
+          />
         ))}
       </View>
       {duration === 'custom' ? (
@@ -199,15 +198,13 @@ export function ProductDetailScreen({ route, navigation }: Props) {
           <Text style={styles.blockHint}>Choose your frequency, number of payments, and amount per payment.</Text>
           <View style={styles.durationRow}>
             {FREQUENCIES.map((d) => (
-              <Pressable
+              <ChoiceChip
                 key={d}
-                style={[styles.chip, customFrequency === d && styles.chipActive]}
+                label={durationLabel(d)}
+                selected={customFrequency === d}
                 onPress={() => setCustomFrequency(d)}
-              >
-                <Text style={[styles.chipText, customFrequency === d && styles.chipTextActive]}>
-                  {durationLabel(d)}
-                </Text>
-              </Pressable>
+                style={styles.chipFlex}
+              />
             ))}
           </View>
           <TextField
@@ -273,49 +270,45 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: colors.radius.xl,
     borderBottomRightRadius: colors.radius.xl,
     borderWidth: 1,
-    borderColor: colors.glass.border,
-    backgroundColor: colors.glass.surfaceStrong,
+    borderColor: colors.borderOnSurface,
+    backgroundColor: colors.surface,
     overflow: 'hidden',
-    marginBottom: 16,
+    marginBottom: 20,
   },
   image: { width: '100%', height: 300 },
   imagePlaceholder: {
-    backgroundColor: colors.accentLight,
+    backgroundColor: colors.surfaceVariant,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  placeholderText: { color: colors.accent, fontSize: 28, fontWeight: '800' },
+  placeholderText: { color: colors.primary, fontSize: 28, fontWeight: '800' },
   heroBody: { padding: 16 },
   name: { fontSize: colors.font.xl, fontWeight: '800', color: colors.text },
-  price: { fontSize: colors.font.lg, fontWeight: '800', color: colors.accent, marginTop: 6 },
+  price: { fontSize: colors.font.lg, fontWeight: '800', color: colors.primary, marginTop: 6 },
   description: { fontSize: colors.font.sm, color: colors.textSecondary, marginTop: 10, lineHeight: 21 },
   block: {
     borderRadius: colors.radius.lg,
     borderWidth: 1,
-    borderColor: colors.glass.border,
-    backgroundColor: colors.glass.surfaceStrong,
-    padding: 14,
-    marginBottom: 16,
+    borderColor: colors.borderOnSurface,
+    backgroundColor: colors.surface,
+    padding: 18,
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 17,
+    fontWeight: '800',
+    color: colors.onBackground,
+    marginBottom: 12,
+    marginTop: 4,
   },
   blockTitle: { fontSize: 16, fontWeight: '800', color: colors.text, marginBottom: 8 },
-  blockHint: { fontSize: 12, color: colors.textMuted, marginBottom: 12 },
-  durationRow: { flexDirection: 'row', gap: 8, marginBottom: 16 },
-  chip: {
-    flex: 1,
-    paddingVertical: 12,
-    borderRadius: colors.radius.md,
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
-    alignItems: 'center',
-  },
-  chipActive: { borderColor: colors.accent, backgroundColor: colors.accentLight },
-  chipText: { fontWeight: '600', color: colors.textSecondary, fontSize: 13 },
-  chipTextActive: { color: colors.accent },
+  blockHint: { fontSize: 12, color: colors.textMuted, marginBottom: 12, lineHeight: 18 },
+  durationRow: { flexDirection: 'row', gap: 8, marginBottom: 20 },
+  chipFlex: { flex: 1 },
   summaryRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 6 },
   summaryLabel: { color: colors.textSecondary, fontSize: 14 },
   summaryValue: { color: colors.text, fontSize: 14 },
-  summaryValueBold: { fontWeight: '800', color: colors.accent },
-  error: { color: colors.error },
-  errorText: { color: colors.error, marginBottom: 12, textAlign: 'center' },
+  summaryValueBold: { fontWeight: '800', color: colors.primary },
+  error: { color: '#FECACA' },
+  errorText: { color: '#FECACA', marginBottom: 12, textAlign: 'center', fontWeight: '600' },
 });
