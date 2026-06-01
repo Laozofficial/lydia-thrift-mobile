@@ -1,20 +1,23 @@
+import * as WebBrowser from 'expo-web-browser';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import { FontProvider } from './src/components/FontProvider';
+
+// Required so Paystack redirect (lydiathrift://) closes the in-app browser on Android.
+WebBrowser.maybeCompleteAuthSession();
+import { AuthProvider } from './src/context/AuthContext';
+import { RootNavigator } from './src/navigation/RootNavigator';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <FontProvider>
+        <AuthProvider>
+          <RootNavigator />
+          <StatusBar style="dark" />
+        </AuthProvider>
+      </FontProvider>
+    </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
