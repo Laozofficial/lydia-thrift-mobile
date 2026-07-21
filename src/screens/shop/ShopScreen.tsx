@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     overflow: 'hidden',
   },
-  image: { width: '100%', height: 140, backgroundColor: colors.surfaceVariant },
+  image: { width: '100%', height: 112, backgroundColor: colors.surfaceVariant },
   imagePlaceholder: { alignItems: 'center', justifyContent: 'center' },
   placeholderText: { fontFamily: fonts.bold, color: colors.primary, fontSize: 18 },
   cardBody: { padding: 14, gap: 6 },

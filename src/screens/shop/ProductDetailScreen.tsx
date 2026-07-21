@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginBottom: 20,
   },
-  image: { width: '100%', height: 300 },
+  image: { width: '100%', height: 232 },
   imagePlaceholder: {
     backgroundColor: colors.surfaceVariant,
     alignItems: 'center',
