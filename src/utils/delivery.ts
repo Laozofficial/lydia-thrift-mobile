@@ -39,7 +39,7 @@ export function deliveryStatusColor(status: string | undefined): string {
     case 'in_transit':
       return '#D97706';
     case 'processing':
-      return '#6B0F1A';
+      return '#E52059';
     default:
       return '#9B777E';
   }

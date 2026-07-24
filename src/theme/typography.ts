@@ -1,11 +1,11 @@
-/** Typography tokens — DM Sans body, Fraunces display */
+/** Typography tokens — Outfit (sans-serif) across body and display */
 export const fonts = {
-  regular: 'DMSans_400Regular',
-  medium: 'DMSans_500Medium',
-  semibold: 'DMSans_600SemiBold',
-  bold: 'DMSans_700Bold',
-  display: 'Fraunces_700Bold',
-  displayMedium: 'Fraunces_600SemiBold',
+  regular: 'Outfit_400Regular',
+  medium: 'Outfit_500Medium',
+  semibold: 'Outfit_600SemiBold',
+  bold: 'Outfit_700Bold',
+  display: 'Outfit_700Bold',
+  displayMedium: 'Outfit_600SemiBold',
 } as const;
 
 export const typography = {

@@ -1,11 +1,11 @@
-/** Lydia's Thrift — wine (#6B0F1A) screen background, white content surfaces */
+/** Lydia's Thrift — rose (#E52059) screen background, white content surfaces */
 export const colors = {
-  primary: '#6B0F1A',
-  accent: '#6B0F1A',
-  accentDark: '#4F0B14',
+  primary: '#E52059',
+  accent: '#E52059',
+  accentDark: '#B81747',
 
   /** Only app / screen background */
-  background: '#6B0F1A',
+  background: '#E52059',
 
   /** Cards, inputs, tab bar */
   surface: '#FFFFFF',
@@ -25,7 +25,7 @@ export const colors = {
 
   border: 'rgba(255,255,255,0.22)',
   borderOnSurface: '#E8D5C8',
-  borderFocus: '#6B0F1A',
+  borderFocus: '#E52059',
 
   success: '#10B981',
   successBg: '#ECFDF5',
