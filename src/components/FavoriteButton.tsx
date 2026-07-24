@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { colors } from '../theme/colors';
 
@@ -11,12 +12,14 @@ type Props = {
 
 export function FavoriteButton({ active, onPress, size = 'card' }: Props) {
   const isHero = size === 'hero';
+  const insets = useSafeAreaInsets();
 
   return (
     <Pressable
       onPress={onPress}
       hitSlop={8}
-      style={[styles.base, isHero ? styles.hero : styles.card]}
+      // Hero sits over a full-bleed image, so keep it clear of the status bar.
+      style={[styles.base, isHero ? [styles.hero, { top: insets.top + 8 }] : styles.card]}
     >
       <Ionicons
         name={active ? 'heart' : 'heart-outline'}

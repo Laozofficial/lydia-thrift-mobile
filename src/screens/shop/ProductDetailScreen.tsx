@@ -140,7 +140,7 @@ export function ProductDetailScreen({ route, navigation }: Props) {
   }
 
   return (
-    <SafeAreaView style={styles.scroll} edges={['left', 'right', 'top']}>
+    <SafeAreaView style={styles.scroll} edges={['left', 'right']}>
       <KeyboardAwareScrollView contentContainerStyle={styles.content}>
       <View style={[styles.backWrap, { top: insets.top + 8 }]}>
         <BackButton onPress={() => navigation.goBack()} />
